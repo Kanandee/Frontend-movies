@@ -13,6 +13,7 @@ import Register from "./containers/Register/Register";
 import Admin from "./containers/Admin/Admin";
 import Welcome from "./containers/Welcome/Welcome";
 import Profile from "./containers/Profile/Profile";
+import ShoppingCart from "./containers/ShoppingCart/ShoppingCart";
 
 function App() {
    return (
@@ -30,6 +31,7 @@ function App() {
                <Route path="/admin" element={<Admin />} />
                <Route path="/welcome" element={<Welcome />} />
                <Route path="/profile" element={<Profile />} />
+               <Route path="/cart" element={<ShoppingCart />} />
                
             </Routes>
          </BrowserRouter>

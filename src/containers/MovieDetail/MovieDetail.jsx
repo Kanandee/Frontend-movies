@@ -3,6 +3,7 @@ import MovieService from "../../_services/MovieService";
 import { environment } from "../../_environmets/environment";
 import { format } from "date-fns";
 import "./MovieDetail.scss";
+import ShoppingStorageService from "../../_services/ShoppingStorageService";
 
 import { useParams } from "react-router-dom";
 
@@ -13,6 +14,10 @@ export default function MovieDetail() {
    useEffect(() => {
       getSingleMovie();
    }, []);
+
+   const addItem = async () => {
+      ShoppingStorageService.addItem(movie._id, movie.title);
+   };
 
    const getSingleMovie = async () => {
       try {
@@ -58,7 +63,7 @@ export default function MovieDetail() {
                         </div>
                         <h5 className="fw-bold">Overview</h5>
                         <p className="fs-5">{movie.overview}</p>
-                        <button type="submit" 
+                        <button type="submit" onClick={addItem} 
                         className="btn btn-primary text-white fw-bold">
                         Alquilar
                         </button>

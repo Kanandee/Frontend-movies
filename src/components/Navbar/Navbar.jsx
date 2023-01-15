@@ -114,6 +114,11 @@ export default function Navbar() {
                            Registro 
                         </NavLink>
                      </li>
+                     <li className="nav-item">
+                        <NavLink to="/cart" className={setNavLinkClassName}>
+                        🛒
+                        </NavLink>
+                     </li>
                   </ul>
                </div>
             </div>
