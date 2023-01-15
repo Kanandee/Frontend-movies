@@ -1,0 +1,27 @@
+.movie-card {
+    border-radius: 10px !important;
+    overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border: none !important;
+    transition: 1s all;
+
+    &:hover {
+        box-shadow: rgba(46, 124, 207, 0.704) 0px 1px 1px 0px inset, rgba(27, 120, 197, 0.507) 0px 50px 100px -20px, rgba(74, 88, 214, 0.474) 0px 30px 60px -30px;
+        cursor: pointer;
+    }
+}
+
+
+.poster-container {
+    position: relative;
+}
+
+.vote-average--movie {
+    position: absolute;
+    bottom: -20px;
+    right: 10px;
+}
+
+.release-date {
+    color: #7e7e7e;
+}
