@@ -3,8 +3,38 @@ import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../../assets/logo.svg";
 import TokenStorageService from "../../_services/TokenStorageService";
+import { useState } from "react";
 
 export default function Navbar() {
+   // ocultar botones
+   const [showLogin, setshowLogin] = useState(true)
+   const [showLogout, setshowLogout] = useState(false)
+   const onClick = () => {
+      if(TokenStorageService.getToken()){
+         setshowLogout(true)
+         setshowLogin(false)
+      }
+      else{
+         setshowLogout(false)
+         setshowLogin(true)
+      }
+   }
+   const Logout = () => (
+      <li className="nav-item">
+         <NavLink to="/logout" onClick={tokenLogout} className={setNavLinkClassName}>
+            Cerrar sesión 
+         </NavLink>
+      </li>
+   )
+
+   const Login = () => (
+      <li className="nav-item">
+         <NavLink to="/login" onClick={onClick} className={setNavLinkClassName}>
+            Iniciar sesión
+         </NavLink>
+      </li>
+   )
+
    let activeClassName = "activeNav";
 
    const setNavLinkClassName = ({ isActive }) => {
@@ -18,6 +48,7 @@ export default function Navbar() {
 
    const tokenLogout = () => {
       TokenStorageService.logOut();
+      onClick();
    };
 
    return (
@@ -76,16 +107,8 @@ export default function Navbar() {
                      </button>
                   </form>
                   <ul className="navbar-nav navbar-right  me-auto mb-2 mb-lg-0">
-                     <li className="nav-item">
-                        <NavLink to="/login" className={setNavLinkClassName}>
-                           Iniciar sesión 
-                        </NavLink>
-                     </li>
-                     <li className="nav-item">
-                        <NavLink to="/welcome" onClick={tokenLogout} className={setNavLinkClassName}>
-                           Cerrar sesión 
-                        </NavLink>
-                     </li>
+                     { showLogin ? <Login /> : null}
+                     { showLogout ? <Logout /> : null}
                      <li className="nav-item">
                         <NavLink to="/register" className={setNavLinkClassName}>
                            Registro 

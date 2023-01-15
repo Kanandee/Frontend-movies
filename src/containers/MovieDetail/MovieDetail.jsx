@@ -58,6 +58,10 @@ export default function MovieDetail() {
                         </div>
                         <h5 className="fw-bold">Overview</h5>
                         <p className="fs-5">{movie.overview}</p>
+                        <button type="submit" 
+                        className="btn btn-primary text-white fw-bold">
+                        Alquilar
+                        </button>
                      </div>
                   </div>
                </div>

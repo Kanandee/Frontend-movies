@@ -21,6 +21,7 @@ function App() {
             <Header />
             <Routes>
                <Route path="/" element={<Navigate to="/welcome" />} />
+               <Route path="/logout" element={<Navigate to="/welcome" />} />
                <Route path="/movies" element={<MovieList />} />
                <Route path="/movies/:id" element={<MovieDetail />} />
                <Route path="/about" element={<About />} />
