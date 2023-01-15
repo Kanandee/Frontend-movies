@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../../assets/logo.svg";
+import TokenStorageService from "../../_services/TokenStorageService";
 
 export default function Navbar() {
    let activeClassName = "activeNav";
@@ -13,6 +14,10 @@ export default function Navbar() {
       ].join(" ");
 
       return className;
+   };
+
+   const tokenLogout = () => {
+      TokenStorageService.logOut();
    };
 
    return (
@@ -74,6 +79,16 @@ export default function Navbar() {
                      <li className="nav-item">
                         <NavLink to="/login" className={setNavLinkClassName}>
                            Iniciar sesión 
+                        </NavLink>
+                     </li>
+                     <li className="nav-item">
+                        <NavLink to="/welcome" onClick={tokenLogout} className={setNavLinkClassName}>
+                           Cerrar sesión 
+                        </NavLink>
+                     </li>
+                     <li className="nav-item">
+                        <NavLink to="/register" className={setNavLinkClassName}>
+                           Registro 
                         </NavLink>
                      </li>
                   </ul>

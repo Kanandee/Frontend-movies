@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import AuthService from "../../_services/AuthService";
 import TokenStorageService from "../../_services/TokenStorageService";
 import { validateLoginFormValues } from "../../_helpers/form-utilities";
-import "./Login.scss";
+import "./Register.scss";
 
-export default function Login() {
+export default function Register() {
    const initialValues = {
       email: "",
       password: "",
+      name: "",
    };
    // hooks
    const navigate = useNavigate();
@@ -17,39 +18,26 @@ export default function Login() {
    const [formErrors, setFormErrors] = useState({});
    const [isSubmit, setIsSubmit] = useState(false);
 
-   const credentials = {
-      email: formValues.email,
-      password: formValues.password,
-   };
+   const user = {
+    email: formValues.email,
+    password: formValues.password,
+    name: formValues.name
+ };
 
-   useEffect(() => {
-     
+   useEffect(() => {   
       // verificar que no hay error
       if (Object.keys(formErrors).length == 0 && isSubmit) {
-         console.log("LOGIN...");
-         login(credentials);
+         console.log("REGISTER...");
+         register(user);
       }
       console.log("useEffect", formErrors);
    }, [formErrors]);
-   
-   const login = async (credentials) => {
+
+   const register = async (user) => {
       try {
-         const res = await AuthService.login(credentials);
+         const res = await AuthService.register(user);
          console.log(res.data);
-         TokenStorageService.saveToken(res.data.token);
-         console.log(res.data.role);
-         switch (res.data.role){
-            case "user":
-               navigate("/profile"); 
-               break;
-            case "admin":
-               navigate("/admin");
-               break;
-            case "super_admin":
-               navigate("/admin");
-               break;
-         }
-         
+         navigate("/login");
       } catch (error) {
          console.log(error);
       }
@@ -75,9 +63,22 @@ export default function Login() {
    return (
       <div>
          <div className="container pt-5 col-lg-3">
-            <h2>Iniciar sesión</h2>
+            <h2>Registro</h2>
 
             <form className="text-start" noValidate onSubmit={handleSubmit}>
+            <div className="mb-3">
+                  <label className="form-label">Nombre</label>
+                  <input
+                     type="name"
+                     name="name"
+                     className="form-control"
+                     value={formValues.name}
+                     onChange={handleChange}
+                  />
+                  <div className="form-text form-text-error">
+                     {formErrors.name}
+                  </div>
+               </div>
                <div className="mb-3">
                   <label className="form-label">Dirección de correo</label>
                   <input
@@ -105,10 +106,11 @@ export default function Login() {
                   </div>
                </div>
                <div className="d-grid gap-2">
-                  <button type="submit" onClick={() => login(credentials)}
+                  <button onClick={() => register(user)}
+                     type="submit"
                      className="btn btn-primary text-white fw-bold"
                   >
-                     Entrar
+                     Confirmar
                   </button>
                </div>
             </form>
