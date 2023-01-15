@@ -36,7 +36,7 @@ export default function Login() {
       try {
          const res = await AuthService.login(credentials);
          console.log(res.data);
-         TokenStorageService.saveToken(res.data.token);
+         TokenStorageService.saveToken(res.data.token, credentials.email);
          console.log(res.data.role);
          switch (res.data.role){
             case "user":
