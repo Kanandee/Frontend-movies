@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AuthService from "../../_services/AuthService";
 import TokenStorageService from "../../_services/TokenStorageService";
 import { validateLoginFormValues } from "../../_helpers/form-utilities";
+import { login } from "../../redux/authSlice";
+
 import "./Login.scss";
 
 export default function Login() {
+
+   const dispatch = useDispatch();
+
    const initialValues = {
       email: "",
       password: "",
@@ -27,17 +33,18 @@ export default function Login() {
       // verificar que no hay error
       if (Object.keys(formErrors).length == 0 && isSubmit) {
          console.log("LOGIN...");
-         login(credentials);
+         loginAuth(credentials);
       }
       console.log("useEffect", formErrors);
    }, [formErrors]);
    
-   const login = async (credentials) => {
+   const loginAuth = async (credentials) => {
       try {
          const res = await AuthService.login(credentials);
          console.log(res.data);
          TokenStorageService.saveToken(res.data.token, credentials.email);
          console.log(res.data.role);
+         dispatch(login(res.data.user.name));
          switch (res.data.role){
             case "user":
                navigate("/profile"); 
@@ -105,7 +112,7 @@ export default function Login() {
                   </div>
                </div>
                <div className="d-grid gap-2">
-                  <button type="submit" onClick={() => login(credentials)}
+                  <button type="submit" onClick={() => loginAuth(credentials)}
                      className="btn btn-primary text-white fw-bold"
                   >
                      Entrar

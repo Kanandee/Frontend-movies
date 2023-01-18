@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import MovieService from "../../_services/MovieService";
 import { environment } from "../../_environmets/environment";
+import { useDispatch } from "react-redux";
 import { format } from "date-fns";
 import "./MovieDetail.scss";
-import ShoppingStorageService from "../../_services/ShoppingStorageService";
+import { updateMovies } from "../../redux/authSlice";
 
 import { useParams } from "react-router-dom";
 
 export default function MovieDetail() {
+   const dispatch = useDispatch();
    const [movie, setMovie] = useState({});
    const { id } = useParams();
 
@@ -16,7 +18,8 @@ export default function MovieDetail() {
    }, []);
 
    const addItem = async () => {
-      ShoppingStorageService.addItem(movie._id, movie.title);
+      console.log("movie added " + movie.title)
+      dispatch(updateMovies(movie.title));
    };
 
    const getSingleMovie = async () => {

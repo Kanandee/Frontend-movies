@@ -1,39 +1,56 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../../assets/logo.svg";
 import TokenStorageService from "../../_services/TokenStorageService";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/authSlice";
+
 
 export default function Navbar() {
-   // ocultar botones
-   const [showLogin, setshowLogin] = useState(true)
-   const [showLogout, setshowLogout] = useState(false)
-   const onClick = () => {
-      if(TokenStorageService.getToken()){
-         setshowLogout(true)
-         setshowLogin(false)
-      }
-      else{
-         setshowLogout(false)
-         setshowLogin(true)
-      }
-   }
-   const Logout = () => (
-      <li className="nav-item">
-         <NavLink to="/logout" onClick={tokenLogout} className={setNavLinkClassName}>
-            Cerrar sesión 
-         </NavLink>
-      </li>
-   )
 
-   const Login = () => (
-      <li className="nav-item">
-         <NavLink to="/login" onClick={onClick} className={setNavLinkClassName}>
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+   const user = useSelector((state) => state.auth.user);
+   
+   // mostrar u ocultar botones
+   const showLoginButtons = () => {
+      if(isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink to="/logout" onClick={tokenLogout} className={setNavLinkClassName}>
+            Cerrar sesión
+         </NavLink>
+      </li>);
+      } else {
+         return( <li className="nav-item">
+         <NavLink to="/login" className={setNavLinkClassName}>
             Iniciar sesión
          </NavLink>
-      </li>
-   )
+      </li>);
+      }
+   }
+
+    // mostrar u ocultar botones
+    const showShoppingButtons = () => {
+      if(isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink to="/cart" className={setNavLinkClassName}>
+         🛒
+         </NavLink>
+      </li>);
+      }
+   }
+
+
+   // accion de logout
+   const tokenLogout = () => {
+      TokenStorageService.logOut();
+      dispatch(logout());
+      navigate('/');
+   };
 
    let activeClassName = "activeNav";
 
@@ -44,11 +61,6 @@ export default function Navbar() {
       ].join(" ");
 
       return className;
-   };
-
-   const tokenLogout = () => {
-      TokenStorageService.logOut();
-      onClick();
    };
 
    return (
@@ -107,18 +119,16 @@ export default function Navbar() {
                      </button>
                   </form>
                   <ul className="navbar-nav navbar-right  me-auto mb-2 mb-lg-0">
-                     { showLogin ? <Login /> : null}
-                     { showLogout ? <Logout /> : null}
+                     {showLoginButtons()}
                      <li className="nav-item">
                         <NavLink to="/register" className={setNavLinkClassName}>
                            Registro 
                         </NavLink>
                      </li>
-                     <li className="nav-item">
-                        <NavLink to="/cart" className={setNavLinkClassName}>
-                        🛒
-                        </NavLink>
-                     </li>
+                     {showShoppingButtons()}
+                     <div>
+                        
+                     </div>
                   </ul>
                </div>
             </div>
