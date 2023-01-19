@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Profile() {
    const token = TokenStorageService.getToken();
-   const email = TokenStorageService.getEmail();
+   const id = TokenStorageService.getUser();
    const [user, setUser] = useState([]);
 
    useEffect(() => {
@@ -15,7 +15,7 @@ export default function Profile() {
    // functions definition
    const getUserInfo = async () => {
       try {
-         const res = await UserService.getUserInfo(token, email);
+         const res = await UserService.getUserInfo(token, id);
        
          setUser(res.data.results);
       } catch (error) {
@@ -32,6 +32,8 @@ export default function Profile() {
                 {user.name}
                 <br />
                 {user.email}
+                <br />
+                {user.role}
                </div>
          </div>
 

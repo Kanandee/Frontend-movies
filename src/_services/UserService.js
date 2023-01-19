@@ -13,8 +13,8 @@ UserService.getAllUsers = async (token) => {
    return await axios.get(apiUrl, config);
 };
 
-UserService.getUserInfo = async (token, email) => {
-   const apiUrl = environment.BASE_API_URL + "/users/" + email;
+UserService.getUserInfo = async (token, id) => {
+   const apiUrl = environment.BASE_API_URL + "/users/" + id;
 
    const config = {
       headers: { Authorization: `Bearer ${token}` },

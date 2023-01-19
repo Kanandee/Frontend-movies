@@ -41,13 +41,11 @@ export default function Login() {
    const loginAuth = async (credentials) => {
       try {
          const res = await AuthService.login(credentials);
-         console.log(res.data);
-         TokenStorageService.saveToken(res.data.token, credentials.email);
-         console.log(res.data.role);
+         TokenStorageService.saveToken(res.data.token, res.data.user._id, res.data.role);
          dispatch(login(res.data.user.name));
          switch (res.data.role){
             case "user":
-               navigate("/profile"); 
+               navigate("/movies"); 
                break;
             case "admin":
                navigate("/admin");

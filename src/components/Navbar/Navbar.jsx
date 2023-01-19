@@ -14,6 +14,7 @@ export default function Navbar() {
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+   const role = TokenStorageService.getRole();
    const user = useSelector((state) => state.auth.user);
    
    // mostrar u ocultar botones
@@ -33,7 +34,7 @@ export default function Navbar() {
       }
    }
 
-    // mostrar u ocultar botones
+   // mostrar u ocultar botones
     const showShoppingButtons = () => {
       if(isLoggedIn){
          return( <li className="nav-item">
@@ -43,6 +44,62 @@ export default function Navbar() {
       </li>);
       }
    }
+
+   // mostrar u ocultar botones
+   const showProfileButtons = () => {
+      if(isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink to="/profile" className={setNavLinkClassName}>
+         Mi Perfil
+         </NavLink>
+      </li>);
+      }
+   }
+
+   // mostrar u ocultar botones
+   const showRegisterButtons = () => {
+      if(!isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink to="/register" className={setNavLinkClassName}>
+            Registro 
+         </NavLink>
+      </li>);
+      }
+   }
+
+   
+   // mostrar u ocultar botones
+   const showMoviesButtons = () => {
+      if(isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink
+            to="/movies"
+            className={setNavLinkClassName}
+            end
+         >
+            Películas
+         </NavLink>
+      </li>);
+      }
+   }
+
+    
+   // mostrar u ocultar botones
+   const showAdminButtons = () => {
+      if(isLoggedIn && role!="user"){
+         return( <li className="nav-item">
+         <NavLink
+            to="/admin"
+            className={setNavLinkClassName}
+            end
+         >
+            Panel de Admin
+         </NavLink>
+      </li>);
+      }
+   }
+
+
 
 
    // accion de logout
@@ -93,19 +150,11 @@ export default function Navbar() {
                >
                   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                      <li className="nav-item">
-                        <NavLink
-                           to="/movies"
-                           className={setNavLinkClassName}
-                           end
-                        >
-                           Películas
-                        </NavLink>
-                     </li>
-                     <li className="nav-item">
                         <NavLink to="/about" className={setNavLinkClassName}>
                            Sobre Nosotros
                         </NavLink>
                      </li>
+                     {showMoviesButtons()}
                   </ul>
                   <form className="d-flex">
                      <input
@@ -120,14 +169,11 @@ export default function Navbar() {
                   </form>
                   <ul className="navbar-nav navbar-right  me-auto mb-2 mb-lg-0">
                      {showLoginButtons()}
-                     <li className="nav-item">
-                        <NavLink to="/register" className={setNavLinkClassName}>
-                           Registro 
-                        </NavLink>
-                     </li>
+                     {showRegisterButtons()}
+                     {showProfileButtons()}
+                     {showAdminButtons()}
                      {showShoppingButtons()}
-                     <div>
-                        
+                     <div> 
                      </div>
                   </ul>
                </div>

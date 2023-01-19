@@ -6,20 +6,29 @@ TokenStorageService.logOut = () => {
    sessionStorage.clear();
 };
 
-TokenStorageService.saveToken = (token, email) => {
+TokenStorageService.saveToken = (token, id, role) => {
    sessionStorage.removeItem(TOKEN_KEY);
    sessionStorage.setItem(TOKEN_KEY, token);
-   // save current user email
-   sessionStorage.removeItem("email");
-   sessionStorage.setItem("email", email);
+   // save current user id
+   sessionStorage.removeItem("id");
+   sessionStorage.setItem("id", id);
+   // save current user role
+   sessionStorage.removeItem("role");
+   sessionStorage.setItem("role", role);
+   console.log("saved token: " + token + ", saved userid: " + id + ", saved role: " + role)
 };
 
 TokenStorageService.getToken = () => {
    return sessionStorage.getItem(TOKEN_KEY);
 };
 
-TokenStorageService.getEmail = () => {
-   return sessionStorage.getItem("email");
+TokenStorageService.getUser = () => {
+   return sessionStorage.getItem("id");
 };
+
+TokenStorageService.getRole = () => {
+   return sessionStorage.getItem("role");
+};
+
 
 export default TokenStorageService;
