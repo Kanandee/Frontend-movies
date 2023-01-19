@@ -19,11 +19,20 @@ const authSlice = createSlice({
       state.user = null;
     },
     updateMovies: (state, action) => {
-      state.movies.push(action.payload + ", ");
+      state.movies.push(action.payload);
+    },
+    removeMovies: (state, action) => {
+      const index = state.movies.indexOf(action.payload);
+      if (index > -1) { 
+        state.movies.splice(index, 1); 
+      }
+    },
+    clearMovies: (state) => {
+      state.movies = []
     }
   },
 });
 
-export const { login, logout, updateMovies } = authSlice.actions;
+export const { login, logout, updateMovies, clearMovies, removeMovies } = authSlice.actions;
 
 export default authSlice.reducer;
