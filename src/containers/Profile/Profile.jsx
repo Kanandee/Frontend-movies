@@ -3,10 +3,12 @@ import UserService from "../../_services/UserService";
 import TokenStorageService from "../../_services/TokenStorageService";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import MovieRent from "../../components/MovieRent/MovieRent";
 
 export default function Profile() {
    const token = TokenStorageService.getToken();
    const id = TokenStorageService.getUser();
+   const [movies, setMovies] = useState([]);
    const [user, setUser] = useState([]);
    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
@@ -18,8 +20,8 @@ export default function Profile() {
    const getUserInfo = async () => {
       try {
          const res = await UserService.getUserInfo(token, id);
-       
          setUser(res.data.results);
+         setMovies(res.data.results.movies);
       } catch (error) {
          console.log(error.message || error);
       }
@@ -45,11 +47,20 @@ export default function Profile() {
                 <br />
                 {user.email}
                 <br />
-                {user.role}
+                <br />
+                  <div className="container pt-5">
+                     <h2 className="fw-bold">Películas alquiladas</h2>
+                  </div>
+                  <div className="d-flex flex-wrap justify-content-center gap-5 mb-5">
+                  {movies.length > 0 &&
+                     movies.map((movie) => <MovieRent movie={movie} />)}
                </div>
+               </div>
+            
          </div>
-
       </div>
+
+      
    );
    }
 }

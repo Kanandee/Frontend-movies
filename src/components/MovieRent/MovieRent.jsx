@@ -1,17 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./ItemShop.scss";
-import { useDispatch } from "react-redux";
-import { environment } from "../../_environmets/environment";
-import { removeMovies } from "../../redux/authSlice";
-import { useNavigate } from "react-router-dom";
+import UserService from "../../_services/UserService";
+import TokenStorageService from "../../_services/TokenStorageService";
 
-function ItemShop({ movie }) {
-   const dispatch = useDispatch();
+function MovieRent({ movie }) {
+
+   const id = TokenStorageService.getUser();
+   const token = TokenStorageService.getToken();
 
    // handlers
    const removeItem = (movie) => {
-      dispatch(removeMovies(movie));
+      UserService.removeRentMovie(token, id, movie)
       console.log("movie removed " + movie)
    };
 
@@ -28,8 +27,8 @@ function ItemShop({ movie }) {
    );
 }
 
-ItemShop.propTypes = {
-   name: PropTypes.object.isRequired,
+MovieRent.propTypes = {
+   movie: PropTypes.object.isRequired,
 };
 
-export default ItemShop;
+export default MovieRent;

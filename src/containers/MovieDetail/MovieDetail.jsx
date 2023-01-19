@@ -41,8 +41,7 @@ export default function MovieDetail() {
             <div class="alert alert-danger" role="alert">
             ¡No estás logeado!
             </div>
-         </div>
-       
+         </div>     
       );
    } else{
       return (

@@ -1,10 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ItemShop from "../../components/ItemShop/ItemShop";
+import UserService from "../../_services/UserService";
+import TokenStorageService from "../../_services/TokenStorageService";
+import { useDispatch } from "react-redux";
+import { clearMovies } from "../../redux/authSlice";
 
 export default function ShoppingCart() {
+   const dispatch = useDispatch();
    const movies = useSelector((state) => state.auth.movies);
+   const id = TokenStorageService.getUser();
    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+   const token = TokenStorageService.getToken();
+   const navigate = useNavigate();
+
+   // functions definition
+   const confirmRent = async () => {
+      try {
+         await UserService.rentAll(token, id, movies);
+         dispatch(clearMovies());
+         navigate("/profile"); 
+      } catch (error) {
+         console.log(error.message || error);
+      }
+   };
+
+
    if(!isLoggedIn){
       return(
          <div>
@@ -26,7 +48,7 @@ export default function ShoppingCart() {
                      movies.map((movie) => <ItemShop movie={movie} />)}
                </div>
             </div>
-
+            <button onClick={confirmRent} type="submit" class="btn btn-outline-success">Confirmar alquiler</button>
          </div>
       );
    }
