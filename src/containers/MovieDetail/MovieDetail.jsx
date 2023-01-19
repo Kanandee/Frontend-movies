@@ -5,11 +5,13 @@ import { useDispatch } from "react-redux";
 import { format } from "date-fns";
 import "./MovieDetail.scss";
 import { updateMovies } from "../../redux/authSlice";
+import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 
 export default function MovieDetail() {
    const dispatch = useDispatch();
+   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
    const [movie, setMovie] = useState({});
    const { id } = useParams();
 
@@ -33,48 +35,58 @@ export default function MovieDetail() {
    };
 
    const getYear = (date) => format(Date.parse(date), "yyyy");
-
-   return (
-      <>
-         {movie.id && (
-            <div className="backdrop-container">
-               <div className="container pt-5 pb-5">
-                  <div className="row">
-                     <div className="col-md-4">
-                        <img
-                           src={
-                              movie.poster_path
-                                 ? `${environment.IMAGES_URL}/w342${movie.poster_path}`
-                                 : ""
-                           }
-                           className="img-fluid mb-4 mb-md-0"
-                           alt="..."
-                        />
-                     </div>
-                     <div className="col-md-8 text-start">
-                        <h1 className="h1 fw-bold  mb-3">
-                           {movie.title}{" "}
-                           <span className="fw-lighter">
-                              ({getYear(movie.release_date)})
-                           </span>
-                        </h1>
-                        <div className="mb-4">{`(${movie.original_language.toUpperCase()}) ${
-                           movie.release_date
-                        }`}</div>
-                        <div className="mb-4 vote-average">
-                           {movie.vote_average}
+   if(!isLoggedIn){
+      return(
+         <div>
+            <div class="alert alert-danger" role="alert">
+            ¡No estás logeado!
+            </div>
+         </div>
+       
+      );
+   } else{
+      return (
+         <>
+            {movie.id && (
+               <div className="backdrop-container">
+                  <div className="container pt-5 pb-5">
+                     <div className="row">
+                        <div className="col-md-4">
+                           <img
+                              src={
+                                 movie.poster_path
+                                    ? `${environment.IMAGES_URL}/w342${movie.poster_path}`
+                                    : ""
+                              }
+                              className="img-fluid mb-4 mb-md-0"
+                              alt="..."
+                           />
                         </div>
-                        <h5 className="fw-bold">Overview</h5>
-                        <p className="fs-5">{movie.overview}</p>
-                        <button type="submit" onClick={addItem} 
-                        className="btn btn-primary text-white fw-bold">
-                        Alquilar
-                        </button>
+                        <div className="col-md-8 text-start">
+                           <h1 className="h1 fw-bold  mb-3">
+                              {movie.title}{" "}
+                              <span className="fw-lighter">
+                                 ({getYear(movie.release_date)})
+                              </span>
+                           </h1>
+                           <div className="mb-4">{`(${movie.original_language.toUpperCase()}) ${
+                              movie.release_date
+                           }`}</div>
+                           <div className="mb-4 vote-average">
+                              {movie.vote_average}
+                           </div>
+                           <h5 className="fw-bold">Overview</h5>
+                           <p className="fs-5">{movie.overview}</p>
+                           <button type="submit" onClick={addItem} 
+                           className="btn btn-primary text-white fw-bold">
+                           Alquilar
+                           </button>
+                        </div>
                      </div>
                   </div>
                </div>
-            </div>
-         )}
-      </>
-   );
+            )}
+         </>
+      );
+   }
 }
