@@ -46,4 +46,14 @@ UserService.removeRentMovie = async (token, id, movie) => {
    return await axios.get(apiUrl, config);
 };
 
+UserService.removeUser = async (token, id) => {
+   const apiUrl = environment.BASE_API_URL + "/users/" + id + "/delete";
+
+   const config = {
+      headers: { Authorization: `Bearer ${token}` },
+   };
+
+   return await axios.get(apiUrl, config);
+};
+
 export default UserService;

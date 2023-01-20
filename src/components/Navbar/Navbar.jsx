@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
+import UserService from "../../_services/UserService";
 
 
 export default function Navbar() {
@@ -16,7 +17,36 @@ export default function Navbar() {
    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
    const role = TokenStorageService.getRole();
    const user = useSelector((state) => state.auth.user);
+   const [userinfo, setUser] = useState([]);
+   const token = TokenStorageService.getToken();
+   const id = TokenStorageService.getUser();
    
+   useEffect(() => {
+      getUserInfo(token, userinfo, id);
+   }, [userinfo, token, id]);
+
+   // functions definition
+   const getUserInfo = async () => {
+      try {
+         const res = await UserService.getUserInfo(token, id);
+         setUser(res.data.results);
+      } catch (error) {
+         console.log(error.message || error);
+      }
+   };
+
+   // mostrar u ocultar botones
+   const showUserName = () => {
+      if(isLoggedIn){
+         return( <li className="nav-item">
+         <NavLink className={setNavLinkClassName}>
+           {userinfo.name}
+         </NavLink>
+      </li>   
+      );
+      }
+   }
+
    // mostrar u ocultar botones
    const showLoginButtons = () => {
       if(isLoggedIn){
@@ -173,6 +203,7 @@ export default function Navbar() {
                      {showProfileButtons()}
                      {showAdminButtons()}
                      {showShoppingButtons()}
+                     {showUserName()}
                      <div> 
                      </div>
                   </ul>

@@ -14,7 +14,7 @@ export default function Profile() {
 
    useEffect(() => {
       getUserInfo(token);
-   }, []);
+   }, [movies]);
 
    // functions definition
    const getUserInfo = async () => {

@@ -3,6 +3,7 @@ import UserService from "../../_services/UserService";
 import TokenStorageService from "../../_services/TokenStorageService";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import UserInfo from "../../components/UserInfo/UserInfo";
 
 export default function Admin() {
    const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Admin() {
 
    useEffect(() => {
       getAllUsers(token);
-   }, []);
+   }, [users]);
 
    // functions definition
    const getAllUsers = async () => {
@@ -25,10 +26,6 @@ export default function Admin() {
       }
    };
 
-   const handleLogout = () => {
-      TokenStorageService.logOut();
-      navigate("/");
-   };
    if(!isLoggedIn){
       return(
          <div>
@@ -42,15 +39,12 @@ export default function Admin() {
     else{
       return (
          <div>
-            <h2>Admin panel</h2>
+            <h2>Panel de administración</h2>
 
-            <div>
-               {users.map((user) => (
-                  <div key={user._id}>{user.name}</div>
-               ))}
-            </div>
-
-            <button onClick={handleLogout}>Logout </button>
+            <ol class="list-group">
+                  {users.length > 0 &&
+                     users.map((user) => <UserInfo user={user} />)}
+               </ol>
          </div>
       );
    }
